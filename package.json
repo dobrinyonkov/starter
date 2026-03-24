@@ -6,7 +6,7 @@
     "dev": "react-router dev",
     "build": "react-router build",
     "preview": "pnpm build && vite preview",
-    "deploy": "pnpm build && wrangler deploy",
+    "deploy": "pnpm build && wrangler d1 migrations apply DB --remote && wrangler deploy",
     "typegen": "wrangler types && react-router typegen",
     "typecheck": "pnpm typegen && tsc -b",
     "db:generate": "drizzle-kit generate",
@@ -47,5 +47,24 @@
     "vite": "^6.3.5",
     "vite-tsconfig-paths": "^5.1.4",
     "wrangler": "^4.77.0"
+  },
+  "cloudflare": {
+    "bindings": {
+      "BETTER_AUTH_SECRET": {
+        "description": "Secret for signing auth tokens. Generate with `openssl rand -base64 32`."
+      },
+      "GITHUB_CLIENT_ID": {
+        "description": "GitHub OAuth app client ID from https://github.com/settings/developers (optional — leave empty to disable GitHub sign-in)."
+      },
+      "GITHUB_CLIENT_SECRET": {
+        "description": "GitHub OAuth app client secret (optional — leave empty to disable GitHub sign-in)."
+      },
+      "RESEND_API_KEY": {
+        "description": "Resend API key from https://resend.com/api-keys (required for magic link sign-in)."
+      },
+      "RESEND_FROM": {
+        "description": "Sender email for auth emails, e.g. auth@yourdomain.com. Must be verified in Resend. Use onboarding@resend.dev for testing."
+      }
+    }
   }
 }
