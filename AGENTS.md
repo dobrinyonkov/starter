@@ -39,7 +39,7 @@ Code runs in the **Cloudflare Workers runtime** (workerd), NOT Node.js. Key diff
 
 These WILL be renamed when stabilized. Check React Router changelogs when upgrading.
 
-**Context passing** — The worker entry (`workers/app.ts`) passes Cloudflare bindings to React Router via a `Map` of context entries:
+**Context passing** — The worker entry (`workers/app.ts`) passes Cloudflare bindings to React Routere via a `Map` of context entries:
 ```ts
 const initialContext = new Map([[cloudflareContext, { env, ctx }]]);
 return requestHandler(request, initialContext);

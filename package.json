@@ -57,6 +57,9 @@
   },
   "cloudflare": {
     "bindings": {
+      "APP_URL": {
+        "description": "Your deployed app URL, e.g. https://starter.username.workers.dev — set after first deploy."
+      },
       "BETTER_AUTH_SECRET": {
         "description": "Secret for signing auth tokens. Generate with `openssl rand -base64 32`."
       },
@@ -68,9 +71,6 @@
       },
       "RESEND_API_KEY": {
         "description": "Resend API key from https://resend.com/api-keys (required for magic link sign-in)."
-      },
-      "RESEND_FROM": {
-        "description": "Sender email for auth emails, e.g. auth@yourdomain.com. Must be verified in Resend. Use onboarding@resend.dev for testing."
       }
     }
   }

@@ -26,11 +26,6 @@
   ],
 
   "vars": {
-    "APP_URL": "http://localhost:5173",
-    "BETTER_AUTH_SECRET": "change-me-generate-with-openssl-rand-base64-32",
-    "GITHUB_CLIENT_ID": "",
-    "GITHUB_CLIENT_SECRET": "",
-    "RESEND_API_KEY": "",
     "RESEND_FROM": "onboarding@resend.dev"
   }
 }
