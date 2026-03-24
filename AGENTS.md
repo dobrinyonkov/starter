@@ -113,6 +113,62 @@ To add a new authenticated route: add it inside the `layout("routes/app/layout.t
 
 To add a new public route: add it at the top level in `routes.ts`.
 
+### Extending the app: step-by-step examples
+
+**Add a new authenticated page** (e.g., `/app/projects`):
+
+1. Create the route file `app/routes/app/projects.tsx`:
+   ```tsx
+   import { userContext } from "~/middleware/context";
+   import { db } from "~/lib/db.server";
+   // loader and action can import .server files — they're stripped from the client bundle
+   export async function loader({ context }) {
+     const user = context.get(userContext);
+     // query D1 via Drizzle...
+     return { projects: [] };
+   }
+   export default function ProjectsPage({ loaderData }) {
+     return <div>...</div>;
+   }
+   ```
+2. Register it in `app/routes.ts` inside the app layout:
+   ```ts
+   layout("routes/app/layout.tsx", [
+     ...prefix("app", [
+       index("routes/app/dashboard.tsx"),
+       route("notes", "routes/app/notes.tsx"),
+       route("projects", "routes/app/projects.tsx"),  // new
+       route("settings", "routes/app/settings.tsx"),
+     ]),
+   ]),
+   ```
+3. Add a sidebar link in `app/routes/app/layout.tsx` (add a `<SidebarLink>`)
+4. Write a test `app/routes/app/projects.test.tsx` using `createRoutesStub`
+
+**Add a new public page** (e.g., `/pricing`):
+
+1. Create `app/routes/pricing.tsx` with a default export component
+2. Add to `routes.ts` at the top level: `route("pricing", "routes/pricing.tsx")`
+
+**Add a new database table**:
+
+1. Create `drizzle/schema/projects.ts`, export the table
+2. Add `export * from "./projects"` to `drizzle/schema/index.ts`
+3. Run `pnpm db:generate` then `pnpm db:migrate:local`
+4. Import from `~/db/schema` in your route loaders/actions
+
+**Add a new API endpoint** (non-auth):
+
+1. Create `app/routes/api/my-endpoint.tsx` with `loader`/`action` exports
+2. Add to `routes.ts`: `route("api/my-endpoint", "routes/api/my-endpoint.tsx")`
+
+**Key rules when extending**:
+- Route components (default exports) are **client code** — don't import `.server.ts` files from them
+- `loader`, `action`, and `unstable_middleware` exports are **server code** — they can import `.server.ts` files
+- Contexts (`userContext`, `sessionContext`) come from `~/middleware/context` (client-safe)
+- All routes under `app/layout.tsx` are auth-protected automatically via the layout's middleware
+- After adding new routes, run `pnpm typegen` to update route types
+
 ## Database
 
 **Drizzle ORM** with Cloudflare D1 (SQLite dialect).
