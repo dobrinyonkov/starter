@@ -178,12 +178,14 @@ The `components.json` configures shadcn to use `~/components/ui` and `~/lib/util
 ```bash
 pnpm dev                  # Start dev server (local D1 + KV via miniflare)
 pnpm build                # Production build
-pnpm deploy               # Build + deploy to Cloudflare Workers
+pnpm deploy               # Build + migrate + deploy to Cloudflare Workers
 pnpm typegen              # Regenerate worker-configuration.d.ts + route types
 pnpm db:generate          # Generate Drizzle migration from schema changes
 pnpm db:migrate:local     # Apply migrations to local D1
 pnpm db:migrate:remote    # Apply migrations to remote D1
 pnpm db:studio            # Open Drizzle Studio (visual DB browser)
+pnpm test                 # Run tests once
+pnpm test:watch           # Run tests in watch mode
 pnpm check                # Biome lint + format check
 pnpm check:fix            # Biome auto-fix
 ```
@@ -202,6 +204,66 @@ Defined in `wrangler.jsonc` under `vars`. For local dev, override in `.env` (git
 | `RESEND_FROM` | Sender email address (must be verified in Resend) |
 
 Cloudflare bindings (D1, KV) are configured in `wrangler.jsonc` under `d1_databases` and `kv_namespaces`.
+
+## Testing
+
+**Vitest** with **jsdom** environment and **React Testing Library** for component tests.
+
+- Config: `vitest.config.ts`
+- Setup: `test/setup.ts` (loads `@testing-library/jest-dom` matchers)
+- Cloudflare mock: `test/mocks/cloudflare-workers.ts` (stubs `env.DB`, `env.KV`, etc.)
+
+### Test structure
+
+Tests live next to the code they test with a `.test.ts` or `.test.tsx` suffix:
+
+```
+app/lib/utils.test.ts                # Unit test for cn() utility
+app/emails/magic-link.test.tsx       # Email template rendering
+app/middleware/context.test.ts       # Context creation
+app/routes/_index.test.tsx           # Landing page component
+app/routes/$.test.tsx                # 404 page component
+app/routes/auth/sign-in.test.tsx     # Sign-in form component
+app/routes/auth/layout.test.tsx      # Auth layout
+app/routes/app/layout.test.tsx       # App shell (sidebar, nav)
+app/routes/app/dashboard.test.tsx    # Dashboard component
+app/routes/app/notes.test.tsx        # Notes CRUD component
+app/routes/app/settings.test.tsx     # Settings component
+```
+
+### How route component tests work
+
+Route components are tested using `createRoutesStub` from `react-router`. This creates a mock router with stubbed loaders/actions so you can render components that use `useLoaderData`, `Form`, `Link`, etc.:
+
+```tsx
+import { createRoutesStub } from "react-router";
+import { render, screen } from "@testing-library/react";
+
+const Stub = createRoutesStub([
+  {
+    path: "/app",
+    Component: MyPage,
+    loader() {
+      return { user: { name: "Test" } };  // Stubbed loader data
+    },
+  },
+]);
+render(<Stub initialEntries={["/app"]} />);
+expect(screen.getByText("Test")).toBeInTheDocument();
+```
+
+### Cloudflare mock
+
+Since tests run in jsdom (not the Workers runtime), `cloudflare:workers` is aliased to `test/mocks/cloudflare-workers.ts` in `vitest.config.ts`. This mock provides stub `env.DB` (D1), `env.KV`, and all environment variables.
+
+If you add new Cloudflare bindings, update the mock in `test/mocks/cloudflare-workers.ts`.
+
+### Writing a new test
+
+1. Create `my-file.test.tsx` next to the file you're testing
+2. For route components: use `createRoutesStub` to provide router context and stub loaders
+3. For server functions that use `cloudflare:workers`: the mock is already aliased — just import and test
+4. Run with `pnpm test` (once) or `pnpm test:watch` (continuous)
 
 ## Gotchas
 

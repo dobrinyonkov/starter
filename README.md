@@ -13,7 +13,7 @@ Everything you need to build a full-stack app on Cloudflare Workers.
 - **Sessions** — [Cloudflare KV](https://developers.cloudflare.com/kv/) (secondary storage + rate limiting)
 - **Email** — [Resend](https://resend.com/) + [React Email](https://react.email/)
 - **Styling** — [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
-- **Tooling** — TypeScript, [Biome](https://biomejs.dev/)
+- **Tooling** — TypeScript, [Biome](https://biomejs.dev/), [Vitest](https://vitest.dev/)
 
 ## Getting Started
 
@@ -107,6 +107,8 @@ drizzle/
 | `pnpm dev` | Start dev server with local D1 + KV |
 | `pnpm build` | Production build |
 | `pnpm deploy` | Build + migrate + deploy to Cloudflare |
+| `pnpm test` | Run tests |
+| `pnpm test:watch` | Run tests in watch mode |
 | `pnpm db:generate` | Generate migration from schema changes |
 | `pnpm db:migrate:local` | Apply migrations locally |
 | `pnpm db:migrate:remote` | Apply migrations to production D1 |
