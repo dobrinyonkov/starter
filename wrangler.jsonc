@@ -1,0 +1,32 @@
+{
+  "name": "starter",
+  "main": "./workers/app.ts",
+  "compatibility_date": "2025-04-04",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "acd18d909a69432495fbef4b21df3b50"
+    }
+  ],
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "starter",
+      "database_id": "84cfcc34-a737-417b-8fe0-72189a9de20e",
+      "migrations_dir": "./drizzle/migrations"
+    }
+  ],
+
+  "vars": {
+    "APP_URL": "https://starter.dobrin-yonkov1.workers.dev",
+    "BETTER_AUTH_SECRET": "c7BAocI6ecJcMq4MgJ8LA9KsBCXAVav24W+NGi1yezE=",
+    "GITHUB_CLIENT_ID": "",
+    "GITHUB_CLIENT_SECRET": "",
+    "RESEND_API_KEY": "",
+    "RESEND_FROM": "auth@yourdomain.com"
+  }
+}
