@@ -8,7 +8,6 @@ const r2Store = new Map<
 >();
 
 export const env = {
-	APP_URL: "http://localhost:5173",
 	BETTER_AUTH_SECRET: "test-secret-for-testing-only",
 	GITHUB_CLIENT_ID: "test-github-id",
 	GITHUB_CLIENT_SECRET: "test-github-secret",

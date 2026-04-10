@@ -69,8 +69,6 @@ pnpm deploy
 
 This builds the app, applies D1 migrations, and deploys to Cloudflare Workers.
 
-After the first deploy, update `APP_URL` in `wrangler.jsonc` to your worker URL (e.g., `https://my-app.username.workers.dev`).
-
 ## Project Structure
 
 ```

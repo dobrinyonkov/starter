@@ -252,7 +252,6 @@ Defined in `wrangler.jsonc` under `vars`. For local dev, override in `.env` (git
 
 | Variable | Purpose |
 |----------|---------|
-| `APP_URL` | Base URL for auth callbacks (e.g., `https://myapp.workers.dev`) |
 | `BETTER_AUTH_SECRET` | Secret for signing auth tokens — generate with `openssl rand -base64 32` |
 | `GITHUB_CLIENT_ID` | GitHub OAuth app client ID |
 | `GITHUB_CLIENT_SECRET` | GitHub OAuth app client secret |
