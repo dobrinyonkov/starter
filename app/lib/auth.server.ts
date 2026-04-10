@@ -9,7 +9,6 @@ import { sendMagicLinkEmail } from "./email.server";
 const isDev = typeof import.meta !== "undefined" && import.meta.env?.MODE === "development";
 
 export const auth = betterAuth({
-  baseURL: env.APP_URL,
   secret: env.BETTER_AUTH_SECRET,
 
   database: drizzleAdapter(db, {

@@ -57,9 +57,6 @@
   },
   "cloudflare": {
     "bindings": {
-      "APP_URL": {
-        "description": "Your deployed app URL, e.g. https://starter.username.workers.dev — set after first deploy."
-      },
       "BETTER_AUTH_SECRET": {
         "description": "Secret for signing auth tokens. Generate with `openssl rand -base64 32`."
       },
