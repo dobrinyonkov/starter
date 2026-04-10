@@ -2,7 +2,12 @@ import { eq } from "drizzle-orm";
 import { users } from "~/db/schema";
 import { auth } from "~/lib/auth.server";
 import { db } from "~/lib/db.server";
-import { deletePhoto, getPhoto, uploadPhoto } from "~/lib/storage.server";
+import {
+	PHOTO_KEY_PREFIX,
+	deletePhoto,
+	getPhoto,
+	uploadPhoto,
+} from "~/lib/storage.server";
 
 /**
  * GET /api/photos/:key+ — Serve a photo from R2.
@@ -57,7 +62,7 @@ async function handleUpload(
 
 	try {
 		// Delete old photo if exists
-		if (user.image?.startsWith("photos/")) {
+		if (user.image?.startsWith(PHOTO_KEY_PREFIX)) {
 			await deletePhoto(user.image);
 		}
 
@@ -78,7 +83,7 @@ async function handleDelete(user: {
 	id: string;
 	image: string | null;
 }) {
-	if (user.image?.startsWith("photos/")) {
+	if (user.image?.startsWith(PHOTO_KEY_PREFIX)) {
 		await deletePhoto(user.image);
 	}
 
