@@ -42,9 +42,10 @@ describe("App layout", () => {
 
   it("renders navigation links", async () => {
     renderLayout();
-    expect(await screen.findByText("Dashboard")).toBeInTheDocument();
-    expect(screen.getByText("Notes")).toBeInTheDocument();
-    expect(screen.getByText("Settings")).toBeInTheDocument();
+    // Desktop sidebar + mobile bottom nav both render the nav links
+    expect(await screen.findAllByText("Dashboard")).toHaveLength(2);
+    expect(screen.getAllByText("Notes")).toHaveLength(2);
+    expect(screen.getAllByText("Settings")).toHaveLength(2);
   });
 
   it("renders sign out button", async () => {
