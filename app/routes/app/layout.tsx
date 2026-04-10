@@ -64,10 +64,23 @@ export default function AppLayout() {
 					</Form>
 				</header>
 
-				<div className="p-6">
+				<div className="p-6 pb-24 md:pb-6">
 					<Outlet />
 				</div>
 			</main>
+
+			{/* Mobile bottom navigation */}
+			<nav className="fixed bottom-0 left-0 right-0 z-10 flex border-t bg-card md:hidden">
+				<MobileNavLink to="/app" icon={LayoutDashboard} end>
+					Dashboard
+				</MobileNavLink>
+				<MobileNavLink to="/app/notes" icon={StickyNote}>
+					Notes
+				</MobileNavLink>
+				<MobileNavLink to="/app/settings" icon={Settings}>
+					Settings
+				</MobileNavLink>
+			</nav>
 		</div>
 	);
 }
@@ -96,6 +109,35 @@ function SidebarLink({
 			}
 		>
 			<Icon className="h-4 w-4" />
+			{children}
+		</NavLink>
+	);
+}
+
+function MobileNavLink({
+	to,
+	icon: Icon,
+	children,
+	end,
+}: {
+	to: string;
+	icon: React.ElementType;
+	children: React.ReactNode;
+	end?: boolean;
+}) {
+	return (
+		<NavLink
+			to={to}
+			end={end}
+			className={({ isActive }) =>
+				`flex flex-1 flex-col items-center gap-1 py-2 text-xs transition-colors ${
+					isActive
+						? "font-medium text-foreground"
+						: "text-muted-foreground hover:text-foreground"
+				}`
+			}
+		>
+			<Icon className="h-5 w-5" />
 			{children}
 		</NavLink>
 	);
