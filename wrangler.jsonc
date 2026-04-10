@@ -23,5 +23,14 @@
       "database_id": "00000000-0000-0000-0000-000000000000",
       "migrations_dir": "./drizzle/migrations"
     }
+  ],
+
+  // Run: npx wrangler r2 bucket create user-photos
+  // Then update the bucket_name below if needed
+  "r2_buckets": [
+    {
+      "binding": "R2",
+      "bucket_name": "user-photos"
+    }
   ]
 }
